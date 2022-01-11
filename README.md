@@ -21,5 +21,5 @@ Dr Rasha website with dynamic content controlled by customized CMS.
 
 ## Live
 
-- [AlRayanWebsite](https://drusamamedhat.com/)
+- [DrRashaWebsite](https://drusamamedhat.com/)
 
