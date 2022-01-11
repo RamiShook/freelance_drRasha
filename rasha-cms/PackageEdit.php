@@ -1,0 +1,505 @@
+<?php
+require_once('./config.php');
+require('./AdminAuthCheck.php');
+
+?>
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+   <meta charset="utf-8" />
+   <title>Package Edit</title>
+   <script type="text/javascript" src="assets/ckeditor/ckeditor.js"></script>
+
+   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+   <meta content="" name="description" />
+   
+   <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+   <link href="assets/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" />
+   <link href="assets/bootstrap/css/bootstrap-fileupload.css" rel="stylesheet" />
+   <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+   <link href="css/style.css" rel="stylesheet" />
+   <link href="css/style-responsive.css" rel="stylesheet" />
+   <link href="css/style-default.css" rel="stylesheet" id="style_color" />
+   <style>
+       td textarea {
+   resize:vertical;
+   columns: 80;
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+
+   </style>
+   <!-- <link href="assets/fullcalendar/fullcalendar/bootstrap-fullcalendar.css" rel="stylesheet" />
+   <link href="assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" media="screen"/> -->
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body class="fixed-top">
+   <!-- BEGIN HEADER -->
+   <?php
+        require('header.php');
+   ?>
+   <!-- END HEADER -->
+   <!-- BEGIN CONTAINER -->
+   <div id="container" class="row-fluid">
+      <!-- BEGIN SIDEBAR -->
+      <div class="sidebar-scroll">
+        <div id="sidebar" class="nav-collapse collapse">
+
+         <!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
+         <div class="navbar-inverse">
+            <form class="navbar-search visible-phone">
+               <input type="text" class="search-query" placeholder="Search" />
+            </form>
+         </div>
+         <!-- END RESPONSIVE QUICK SEARCH FORM -->
+         <!-- BEGIN SIDEBAR MENU -->
+         <?php
+         include('menu.php');
+            ?>
+         <!-- END SIDEBAR MENU -->
+      </div>
+      </div>
+      <!-- END SIDEBAR -->
+      <!-- BEGIN PAGE -->  
+      <div id="main-content">
+         <!-- BEGIN PAGE CONTAINER-->
+         <div class="container-fluid">
+            <!-- BEGIN PAGE HEADER-->   
+            <div class="row-fluid">
+               <div class="span12">
+
+                  <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+                   <h3 class="page-title">
+                     Package Edit
+                   </h3>
+                   <ul class="breadcrumb">
+                       <li>
+                           <a href="#">Home</a>
+                           <span class="divider">/</span>
+                       </li>
+                       <li>
+                           <a href="#">CMS </a>
+                           <span class="divider">/</span>
+                       </li>
+                       <li class="active">
+                           Package EDit
+                       </li>
+                      
+                   </ul>
+                   <!-- END PAGE TITLE & BREADCRUMB-->
+               </div>
+            </div>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <?php
+            $package_id =mysqli_real_escape_string($connection,  $_GET['package_id']);
+            
+            $q=mysqli_query($connection,"SELECT * FROM package_item WHERE package_id = '$package_id'");
+            if(mysqli_num_rows($q)>0){
+                $package = mysqli_fetch_row($q);		 
+                
+            }else{
+                echo'<div style="color:red;" align="center"> <h1>Package Not Found</h1></div>';
+                exit;
+            }
+        
+            ?>
+
+
+<form class="form-vertical" method="get" action="#" id="service_form">
+<div align="center" id ="result"></div>
+    <table style="width:100%; height=100%" border="1">
+    <tr>
+<td colspan=2>
+                                <div class="control-group">
+                                    <label class="control-label">Display Order</label>
+                                    <div class="controls">
+                                        <input type="number" placeholder="" class="input-mini"
+                                                value="<?php echo $package[7];?>"
+                                                name="display_order"
+                                                id="display_order">
+                                        <span class="help-inline">(Display Order Must Be Unique, if you put an order that already exist than system will automatically set after the last one)</span>
+                                    </div>
+                                </div>
+</td>
+</tr>
+
+<tr>
+<td>
+
+<div class="control-group">
+            <label class="control-label">En Package Name</label>
+            <div class="controls">
+                <input type="text"
+                       placeholder="En Package Name"
+                       class="input-xxlarge"
+                       name="en_package_name"
+                       id="en_package_name"
+                       
+                       value="<?php echo $package[1]?>"
+                       >
+            </div>
+        </div>
+</td>
+<td>
+
+<div class="control-group">
+            <label class="control-label">Ar Package Name</label>
+            <div class="controls">
+                <input type="text"
+                       placeholder="Ar Package Name"
+                       class="input-xxlarge"
+                       name="ar_package_name"
+                       id="ar_package_name"
+                       
+                       value="<?php echo $package[2]?>"
+                       >
+            </div>
+        </div>
+</td>
+
+    </td>
+</tr>
+
+<tr>
+        <td colspan=2>
+            <div class="row-fluid">
+
+                                    <div class="control-group">
+                                    <label class="control-label">Package Price</label>
+                                    <div class="controls">
+                                        <textarea class="span12 ckeditor" 
+                                        name="package_price"
+                                        rows="20"
+                                        id="package_price" >
+                                      <?php echo $package[3]?>
+                                        </textarea>
+                                    </div>
+                                </div>
+        </td>
+        
+</tr>
+
+<tr>
+<td>
+
+<div class="control-group">
+            <label class="control-label">En Button Label</label>
+            <div class="controls">
+                <input type="text"
+                       placeholder="En Button Label"
+                       class="input-xxlarge"
+                       name="en_btn_label"
+                       id="en_btn_label"
+                       
+                       value="<?php echo $package[4]?>"
+                       >
+            </div>
+        </div>
+</td>
+<td>
+
+<div class="control-group">
+            <label class="control-label">Ar Button Label</label>
+            <div class="controls">
+                <input type="text"
+                       placeholder="Ar Button Label"
+                       class="input-xxlarge"
+                       name="ar_btn_label"
+                       id="ar_btn_label"
+                       
+                       value="<?php echo $package[5]?>"
+                       >
+            </div>
+        </div>
+</td>
+
+    </td>
+</tr>
+<tr>
+<td colspan=2>
+                                <div class="control-group">
+                                    <label class="control-label">Button Link</label>
+                                    <div class="controls">
+                                        <input type="text"
+                                               placeholder="Button Link"
+                                               class="input-xxlarge"
+                                               name="btn_link"
+                                               id="btn_link"
+                                               
+                                               value="<?php echo $package[6];?>"
+                                               >
+                                    </div>
+                                </div>
+
+    </td>
+
+</tr>
+
+
+<tr>
+<td colspan=2>
+
+<div class="control-group">
+                                    <label class="control-label">package Status</label>
+                                    <div class="controls">
+                                        <select class="input-medium m-wrap" tabindex="1"
+                                                name="package_status"
+                                                id="package_status">
+                                            <?php
+                                            if($package[8]==1){
+                                                echo '
+                                                <option value="active" name="active" selected>Active</option>
+                                                <option value="Unactive" name="Unactive">Unactive</option>
+                                                ';
+                                            }else{
+                                                echo '
+                                                <option value="active" name="active">Active</option>
+                                                <option value="unactive" name="unactive" selected>Unactive</option>
+                                                ';
+                                            }
+                                            ?>
+                                </div>
+                                        </select>
+                                    </div>
+
+
+</div>
+</td>
+</tr>
+
+<tr>
+<td colspan=2>
+ <input type="button" value="Update Data" class="btn btn-success" onclick="updateData()"></input>  &nbsp; &nbsp; 
+ <input type="button" value="reset" class="btn"  onclick="location.reload()"></input>
+</td>
+
+</tr>
+
+    </table>
+
+    <div align="center">
+        
+    <br>
+    <table style="border: 1px solid black">
+    <thead>
+        <tr>
+            <th>value</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+<?php
+$package_id = $package[0];
+
+$q1=mysqli_query($connection,"SELECT package_info_id,ar_value FROM package_item_details
+                            WHERE package_id = '$package_id'");
+while($package_row = mysqli_fetch_array($q1)){
+
+    echo '
+ 
+
+    <form method="POST" id="'.$package_row[0].'">
+<tr>
+<td>
+        <input type="text" value="'.$package_row[1].'" id="package_info_'.$package_row[0].'" ></input>
+</td>
+
+<td>
+        <input type="button" value="update" class="btn btn-success" onclick="updatePackagelist('.$package_row[0].')"></input>
+        <input type="button" value="delete" class="btn btn-danger"  onclick="deleteList('.$package_row[0].')"></input>
+</td>
+    </form>
+  
+    ';
+
+}
+
+
+?>
+
+
+<br>
+Enter New Package Detail
+
+<input type="text" placeholder="Benefits" id="newPackageDetail"></input>
+<input type="button" class="btn btn-success" value="Add" onclick="addNewPackageDetail(<?php echo $package_id?>)" ></input>
+
+
+
+
+<script langauge="javascript">
+function addNewPackageDetail(package_id){
+    let data = new FormData(); 
+    data.append('add_list','true')
+    data.append('package_id',package_id)
+    data.append('list_value',document.getElementById('newPackageDetail').value);
+
+    fetch('./package_list_functions.php', {
+    mode: 'same-origin', 
+    credentials: 'include',
+    method: 'POST',
+    body: data
+  }).then(response => {
+    if (!response.ok) {
+      throw new Error('Network error!');
+    }else{
+    return response.text();
+    }
+  }).then(location.reload())
+  .catch(console.error)
+}
+
+
+
+function deleteList(package_list_id){
+    let data = new FormData(); 
+    data.append('delete_list','true');
+    data.append('package_list_id',package_list_id);
+    fetch('./package_list_functions.php', {
+    mode: 'same-origin', 
+    credentials: 'include',
+    method: 'POST',
+    body: data
+  }).then(response => {
+    if (!response.ok) {
+      throw new Error('Network error!');
+    }else{
+    return response.text();
+    }
+  }).then(location.reload())
+  .catch(console.error)
+
+}
+
+
+
+function updatePackagelist(package_list_id){
+
+    let value = document.getElementById("package_info_"+package_list_id).value;
+
+    let data = new FormData(); 
+    data.append('update_list','true');
+    data.append('package_list_id',package_list_id);
+    data.append('package_list_value',value);
+
+
+    fetch('./package_list_functions.php', {
+    mode: 'same-origin', 
+    credentials: 'include',
+    method: 'POST',
+    body: data
+  }).then(response => {
+    if (!response.ok) {
+      throw new Error('Network error!');
+    }else{
+    return response.text();
+    }
+  }).then(location.reload())
+  .catch(console.error)
+
+}
+
+
+</script>
+
+
+  </table>
+   </div>
+
+
+    <input type="hidden"
+           value="<?php echo $package[0];?>"
+           id="package_id"
+           name="package_id"> </input>
+
+    <input type="hidden"
+           value="<?php echo $package[7];?>"
+           id="inital_display_order"
+           name ="inital_display_order"> </input>
+        </form>
+
+
+            <!-- END PAGE CONTENT-->         
+         </div>
+         <!-- END PAGE CONTAINER-->
+      </div>
+      <!-- END PAGE -->  
+   </div>
+   <!-- END CONTAINER -->
+
+   <!-- BEGIN FOOTER -->
+<?php
+        include('footer.php');
+?>
+   <!-- END FOOTER -->
+
+   <!-- BEGIN JAVASCRIPTS -->
+   <!-- Load javascripts at bottom, this will reduce page load time -->
+   <script src="js/jquery-1.8.3.min.js"></script>
+   <script src="js/jquery.nicescroll.js" type="text/javascript"></script>
+   <script type="text/javascript" src="assets/jquery-slimscroll/jquery-ui-1.9.2.custom.min.js"></script>
+   <script type="text/javascript" src="assets/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+   <script src="assets/fullcalendar/fullcalendar/fullcalendar.min.js"></script>
+   <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+
+   <!-- ie8 fixes -->
+   <!--[if lt IE 9]>
+   <script src="js/excanvas.js"></script>
+   <script src="js/respond.js"></script>
+   <![endif]-->
+
+   <!-- <script src="assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js" type="text/javascript"></script> -->
+   <script src="js/jquery.sparkline.js" type="text/javascript"></script>
+   <!-- <script src="assets/chart-master/Chart.js"></script> -->
+   <script src="js/jquery.scrollTo.min.js"></script>
+
+
+   <!--common script for all pages-->
+   <script src="js/common-scripts.js"></script>
+
+   <!--script for this page only-->
+<!--  -->
+   <!-- <script src="js/easy-pie-chart.js"></script> -->
+   <!-- <script src="js/sparkline-chart.js"></script> -->
+   <!-- <script src="js/home-page-calender.js"></script> -->
+   <!-- <script src="js/home-chartjs.js"></script> -->
+<!--  -->
+   <!-- END JAVASCRIPTS -->   
+</body>
+<!-- END BODY -->
+<script>
+      // update section body&title
+function updateData() {
+    const form = document.getElementById('service_form');
+    var input = document.querySelector('input[type="file"]');
+
+    let data = new FormData(form)
+    data.append('updatePackage',document.getElementById("package_id").value);
+    data.append('edited_package_price',CKEDITOR.instances.package_price.getData());
+    
+
+    fetch('./editPackageFunctions.php', {
+        mode: 'same-origin', 
+        credentials: 'include',
+        
+        method: 'POST',
+    
+        body: data
+    }).then(response => {
+        if (!response.ok) {
+        throw new Error('Network error!');
+        }else{
+        return response.text();
+        }
+    }).then(responseText =>
+    document.getElementById("result").innerHTML= responseText)
+    .catch(console.error)
+}
+</script>
+</html>

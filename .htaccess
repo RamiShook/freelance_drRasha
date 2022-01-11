@@ -1,0 +1,23 @@
+Options +FollowSymLinks
+RewriteEngine on
+
+RewriteRule blog/(.*)/([0-9]+)/ blog-single.php?post=$2&slug=$1
+RewriteRule blog/(.*)/([0-9]+) blog-single.php?post=$2&slug=$1
+
+RewriteRule treatments/(.*)/([0-9]+) treatments.php?service=$2&slug=$1
+
+RewriteRule "home/" "index.php" [L]
+RewriteRule "about/" "about-us.php" [L]
+RewriteRule "treatments/" "treatments.php" [L]
+RewriteRule "gallery/" "gallery.php" [L]
+RewriteRule "blog-posts/" "blog-listing.php" [L]
+RewriteRule "contact/" "contact-us.php" [L]
+
+
+
+RewriteRule "home" "index.php" [L]
+RewriteRule "about" "about-us.php" [L]
+RewriteRule "treatments" "treatments.php" [L]
+RewriteRule "gallery" "gallery.php" [L]
+RewriteRule "blog-posts" "blog-listing.php" [L]
+RewriteRule "contact" "contact-us.php" [L]
